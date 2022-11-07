@@ -1,18 +1,15 @@
-from fastapi import FastAPI,status,HTTPException,Depends
-from typing import Union
+from typing import Optional, Union
+
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from db.database import Base, engine,inventory,user_table
-from typing import Optional
-from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from pydantic import BaseModel
-import tokens
-import oauth2  
+from sqlalchemy.orm import Session
+
+import oauth2
 import schemas
-
-
-
-
+import tokens
+from db.database import Base, engine, inventory, user_table
 
 Base.metadata.create_all(engine)
 

@@ -1,9 +1,11 @@
-from jose import JWTError, jwt
-from typing import Union
-from datetime import datetime, timedelta
-import schemas
 import os
+from datetime import datetime, timedelta
+from typing import Union
+
 from dotenv import load_dotenv
+from jose import JWTError, jwt
+
+import schemas
 
 load_dotenv()
 

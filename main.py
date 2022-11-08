@@ -102,7 +102,7 @@ def read_inventory(
 
 
 @app.get("/user")
-def read_user():
+def read_user(current_user: schemas.UserRequest = Depends(oauth2.get_current_user)):
     session = Session(bind=engine, expire_on_commit=False)
 
     user_data = session.query(user_table).all()

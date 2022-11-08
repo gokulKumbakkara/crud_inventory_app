@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 import oauth2
 import schemas
 import tokens
-from db.database import Base, engine, inventory, user_table
+from database import Base, engine, inventory, user_table
 
 Base.metadata.create_all(engine)
 
@@ -17,9 +17,9 @@ Base.metadata.create_all(engine)
 app = FastAPI()
 
 
-@app.get("/inventory/{id}", response_model=schemas.showInventory)
+@app.get("/inventory/{id}", response_model=schemas.ShowInventory)
 def read_inventory_item(
-    id: int, current_user: schemas.userRequest = Depends(oauth2.get_current_user)
+    id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -33,8 +33,8 @@ def read_inventory_item(
 
 @app.post("/inventory", status_code=status.HTTP_201_CREATED)
 def create_inventory(
-    request: schemas.inventoryRequest,
-    current_user: schemas.userRequest = Depends(oauth2.get_current_user),
+    request: schemas.InventoryRequest,
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -51,7 +51,7 @@ def create_inventory(
 def update_inventory(
     id: int,
     items: str,
-    current_user: schemas.userRequest = Depends(oauth2.get_current_user),
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -75,7 +75,7 @@ def update_inventory(
 
 @app.delete("/inventory/{id}")
 def delete_inventory_item(
-    id: int, current_user: schemas.userRequest = Depends(oauth2.get_current_user)
+    id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -89,7 +89,7 @@ def delete_inventory_item(
 
 @app.get("/inventory")
 def read_inventory(
-    current_user: schemas.userRequest = Depends(oauth2.get_current_user),
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -102,7 +102,7 @@ def read_inventory(
 
 
 @app.get("/user")
-def read_user(current_user: schemas.userRequest = Depends(oauth2.get_current_user)):
+def read_user():
     session = Session(bind=engine, expire_on_commit=False)
 
     user_data = session.query(user_table).all()
@@ -115,10 +115,10 @@ def read_user(current_user: schemas.userRequest = Depends(oauth2.get_current_use
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-@app.post("/user", response_model=schemas.showUser)
+@app.post("/user", response_model=schemas.ShowUser)
 def create_user(
-    request: schemas.userRequest,
-    current_user: schemas.userRequest = Depends(oauth2.get_current_user),
+    request: schemas.UserRequest,
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -134,9 +134,9 @@ def create_user(
     return user_instance
 
 
-@app.get("/user/{id}", response_model=schemas.showUser)
+@app.get("/user/{id}", response_model=schemas.ShowUser)
 def read_user_id(
-    id: int, current_user: schemas.userRequest = Depends(oauth2.get_current_user)
+    id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -152,7 +152,7 @@ def read_user_id(
 def update_inventory(
     id: int,
     name: str,
-    current_user: schemas.userRequest = Depends(oauth2.get_current_user),
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
@@ -173,7 +173,7 @@ def update_inventory(
 
 @app.delete("/inventory/{id}")
 def delete_inventory_item(
-    id: int, current_user: schemas.userRequest = Depends(oauth2.get_current_user)
+    id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
     session = Session(bind=engine, expire_on_commit=False)

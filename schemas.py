@@ -7,16 +7,16 @@ class TokenData(BaseModel):
     email: Union[str, None] = None
 
 
-class inventoryRequest(BaseModel):
+class InventoryRequest(BaseModel):
     items: str
 
 
-class showInventory(BaseModel):
+class ShowInventory(BaseModel):
     items: str
     name: str
 
 
-class userRequest(BaseModel):
+class UserRequest(BaseModel):
     name: str
     email: str
     password: str
@@ -27,7 +27,7 @@ class Token(BaseModel):
     token_type: str
 
 
-class showUser(BaseModel):
+class ShowUser(BaseModel):
     name: str
     email: str
 

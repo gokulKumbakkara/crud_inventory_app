@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException,status
 from fastapi.security import OAuth2PasswordBearer
 
 import tokens
@@ -13,4 +13,4 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    return tokens.verify_token(token, credentials_exception)
+    return tokens.verify_token(token)

@@ -5,7 +5,7 @@ from typing import Union
 from dotenv import load_dotenv
 from jose import JWTError, jwt
 
-import schemas
+from schema import schemas
 
 load_dotenv()
 

@@ -6,10 +6,9 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-import oauth2
-import schemas
-import tokens
-from database import Base, engine, inventory, user_table
+from security import oauth2,tokens
+from schema import schemas
+from models.database import Base, engine, inventory, user_table
 
 Base.metadata.create_all(engine)
 

@@ -1,11 +1,12 @@
 
 
 
-from database import user_table
-from schemas import ShowUser
+from models.database import user_table
+from schema.schemas import ShowUser
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
+from models.database import user_table
 
 
 def create_the_users(user: ShowUser):
@@ -23,6 +24,6 @@ def create_the_users(user: ShowUser):
 def get_user_by_email(email: str):
 
     session = Session(bind=engine, expire_on_commit=False)
-    user = db.query(user_table).filter(user_table.email == email).first()
+    user = query(user_table).filter(user_table.email == email).first()
     session.close()
     return user

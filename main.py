@@ -117,7 +117,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 @app.post("/user", response_model=schemas.ShowUser)
 def create_user(
     request: schemas.UserRequest,
-    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
 
     session = Session(bind=engine, expire_on_commit=False)

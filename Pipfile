@@ -19,6 +19,7 @@ python-jose = "*"
 typing = "*"
 python-multipart = "*"
 python-dotenv = "*"
+pytest = "*"
 
 [dev-packages]
 pytest = "*"

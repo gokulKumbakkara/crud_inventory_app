@@ -27,7 +27,7 @@ def read_inventory_item(
 
     session.close()
 
-    return invent.id
+    return invent
 
 
 @app.post("/inventory", status_code=status.HTTP_201_CREATED)
@@ -69,7 +69,7 @@ def update_inventory(
             detail=f"item with id {id} not found",
         )
 
-    return (inventory_item,)
+    return inventory_item
 
 
 @app.delete("/inventory/{id}")
@@ -143,7 +143,7 @@ def read_user_id(
 
     session.close()
 
-    return f"items with id: {invent.id}"
+    return invent
 
 
 @app.put("/user/{id}")

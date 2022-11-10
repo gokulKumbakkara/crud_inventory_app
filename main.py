@@ -12,11 +12,14 @@ from security import oauth2, tokens
 
 Base.metadata.create_all(engine)
 
+tags_metadata = [
+  
+    
+]
 
-app = FastAPI()
+app = FastAPI(openapi_tags=tags_metadata)
 
-
-@app.get("/inventory/{id}")
+@app.get("/inventory/{id}",tags=["inventory"])
 def read_inventory_item(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
@@ -33,7 +36,7 @@ def read_inventory_item(
     return invent
 
 
-@app.post("/inventory", status_code=status.HTTP_201_CREATED)
+@app.post("/inventory", status_code=status.HTTP_201_CREATED,tags=["inventory"])
 def create_inventory(
     request: schemas.InventoryRequest,
     current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
@@ -48,7 +51,7 @@ def create_inventory(
     return inventory_instance
 
 
-@app.put("/inventory/{id}")
+@app.put("/inventory/{id}",tags=["inventory"])
 def update_inventory(
     id: int,
     items: str,
@@ -74,7 +77,7 @@ def update_inventory(
     return inventory_item
 
 
-@app.delete("/inventory/{id}")
+@app.delete("/inventory/{id}",tags=["inventory"])
 def delete_inventory_item(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
@@ -88,7 +91,7 @@ def delete_inventory_item(
         session.close()
 
 
-@app.get("/inventory")
+@app.get("/inventory",tags=["inventory"])
 def read_inventory(
     current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
@@ -102,7 +105,7 @@ def read_inventory(
     return inventory_list
 
 
-@app.get("/user")
+@app.get("/user",tags=["user"])
 def read_user(current_user: schemas.UserRequest = Depends(oauth2.get_current_user)):
     session = Session(bind=engine, expire_on_commit=False)
 
@@ -116,7 +119,7 @@ def read_user(current_user: schemas.UserRequest = Depends(oauth2.get_current_use
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-@app.post("/user", response_model=schemas.ShowUser)
+@app.post("/user", response_model=schemas.ShowUser,tags=["user"])
 def create_user(
     request: schemas.UserRequest,
 ):
@@ -134,7 +137,7 @@ def create_user(
     return user_instance
 
 
-@app.get("/user/{id}", response_model=schemas.ShowUser)
+@app.get("/user/{id}", response_model=schemas.ShowUser,tags=["user"])
 def read_user_id(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
@@ -148,7 +151,7 @@ def read_user_id(
     return invent
 
 
-@app.put("/user/{id}")
+@app.put("/user/{id}",tags=["user"])
 def update_inventory(
     id: int,
     name: str,
@@ -171,7 +174,7 @@ def update_inventory(
     return user_data
 
 
-@app.delete("/user/{id}")
+@app.delete("/user/{id}",tags=["user"])
 def delete_user(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
@@ -184,16 +187,11 @@ def delete_user(
         session.commit()
         session.close()
 
-
-def encrypt(password: str):
-    return pwd_context.hash(password)
-
-
 def verify(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-@app.post("/login")
+@app.post("/login",tags=["login"])
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     session = Session(bind=engine, expire_on_commit=False)
     user = (

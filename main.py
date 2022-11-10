@@ -6,9 +6,9 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from security import oauth2,tokens
-from schema import schemas
 from models.database import Base, engine, inventory, user_table
+from schema import schemas
+from security import oauth2, tokens
 
 Base.metadata.create_all(engine)
 
@@ -26,9 +26,7 @@ def read_inventory_item(
     invent = session.query(inventory).get(id)
 
     if not invent:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"no items"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"no items")
 
     session.close()
 
@@ -38,10 +36,10 @@ def read_inventory_item(
 @app.post("/inventory", status_code=status.HTTP_201_CREATED)
 def create_inventory(
     request: schemas.InventoryRequest,
-    current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
 ):
     session = Session(bind=engine, expire_on_commit=False)
-    inventory_instance = inventory(items=request.items,user_id=current_user.user_id)
+    inventory_instance = inventory(items=request.items, user_id=current_user.user_id)
     session.add(inventory_instance)
     session.commit()
 
@@ -210,5 +208,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
             status_code=status.HTTP_404_NOT_FOUND, detail=f"incorrect password"
         )
 
-    access_token = tokens.create_access_token(data={"sub": user.email,"user_id":user.id})
+    access_token = tokens.create_access_token(
+        data={"sub": user.email, "user_id": user.id}
+    )
     return {"access_token": access_token, "token_type": "bearer"}

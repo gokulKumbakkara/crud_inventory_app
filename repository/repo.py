@@ -1,12 +1,11 @@
 
 
 
-from models.database import user_table
+from fastapi.security import OAuth2PasswordRequestForm
+from models.database import engine, user_table
+from passlib.context import CryptContext
 from schema.schemas import ShowUser
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordRequestForm
-from passlib.context import CryptContext
-from models.database import user_table, engine
 
 
 def create_the_users(user: ShowUser):

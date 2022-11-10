@@ -1,7 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-
 
 engine = create_engine(
     "sqlite:///main_database.db", echo=True, connect_args={"check_same_thread": False}

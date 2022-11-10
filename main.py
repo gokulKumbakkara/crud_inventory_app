@@ -16,7 +16,7 @@ Base.metadata.create_all(engine)
 app = FastAPI()
 
 
-@app.get("/inventory/{id}", response_model=schemas.ShowInventory)
+@app.get("/inventory/{id}")
 def read_inventory_item(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
@@ -24,6 +24,11 @@ def read_inventory_item(
     session = Session(bind=engine, expire_on_commit=False)
 
     invent = session.query(inventory).get(id)
+
+    if not invent:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"no items"
+        )
 
     session.close()
 
@@ -169,13 +174,13 @@ def update_inventory(
     return user_data
 
 
-@app.delete("/inventory/{id}")
-def delete_inventory_item(
+@app.delete("/user/{id}")
+def delete_user(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
     session = Session(bind=engine, expire_on_commit=False)
-    invent = session.query(inventory).get(id)
+    invent = session.query(user_table).get(id)
 
     if invent:
         session.delete(invent)

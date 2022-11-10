@@ -12,8 +12,7 @@ class InventoryRequest(BaseModel):
 
 
 class ShowInventory(BaseModel):
-    items: str
-    name: str
+    id: int
 
 
 class UserRequest(BaseModel):
@@ -25,6 +24,7 @@ class UserRequest(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
 
 
 class ShowUser(BaseModel):

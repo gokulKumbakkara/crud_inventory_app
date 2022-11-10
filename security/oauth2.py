@@ -5,6 +5,7 @@ from jose import JWTError, jwt
 from security import tokens
 from repository.repo import get_user_by_email
 from dotenv import load_dotenv
+from schema.schemas import UserRequest,CurrentUser
 load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -21,5 +22,5 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    return tokens.verify_token(token,credentials_exception)
-
+    token_data= tokens.verify_token(token,credentials_exception)
+    return CurrentUser(id=token_data.user_id,email=token_data.email)

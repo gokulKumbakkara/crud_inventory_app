@@ -38,11 +38,10 @@ def read_inventory_item(
 @app.post("/inventory", status_code=status.HTTP_201_CREATED)
 def create_inventory(
     request: schemas.InventoryRequest,
-    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
+    current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
-
     session = Session(bind=engine, expire_on_commit=False)
-    inventory_instance = inventory(items=request.items)
+    inventory_instance = inventory(items=request.items,user_id=current_user.user_id)
     session.add(inventory_instance)
     session.commit()
 
@@ -202,7 +201,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = (
         session.query(user_table).filter(user_table.email == form_data.username).first()
     )
-    print(user.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"invalid credentials"
@@ -212,5 +210,5 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
             status_code=status.HTTP_404_NOT_FOUND, detail=f"incorrect password"
         )
 
-    access_token = tokens.create_access_token(data={"sub": user.email})
+    access_token = tokens.create_access_token(data={"sub": user.email,"user_id":user.id})
     return {"access_token": access_token, "token_type": "bearer"}

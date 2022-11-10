@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class TokenData(BaseModel):
     email: Union[str, None] = None
+    user_id: Union[str, None] = None
 
 
 class InventoryRequest(BaseModel):
@@ -25,6 +26,9 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class CurrentUser(BaseModel):
+    id: int
+    email: str
 
 
 class ShowUser(BaseModel):

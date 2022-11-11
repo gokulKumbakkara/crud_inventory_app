@@ -20,6 +20,7 @@ typing = "*"
 python-multipart = "*"
 python-dotenv = "*"
 pytest = "*"
+monkeytype = "*"
 
 [dev-packages]
 pytest = "*"

@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from models.database import Base, engine, inventory, user_table
 from schema import schemas
 from security import oauth2, tokens
+from repository.repo import verify
 
 
 

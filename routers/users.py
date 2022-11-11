@@ -97,6 +97,4 @@ def delete_user(
         session.delete(invent)
         session.commit()
         session.close()
-
-def verify(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+    

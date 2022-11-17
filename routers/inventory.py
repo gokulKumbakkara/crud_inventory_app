@@ -44,11 +44,10 @@ def read_inventory_item(
 
     return invent
 
-
 @router.post("/inventory", status_code=status.HTTP_201_CREATED,tags=["inventory"])
 def create_inventory(
     request: schemas.InventoryRequest,
-    current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
+    current_user: schemas.CurrentUser = Depends(oauth2.get_current_user),
 ):
     session = Session(bind=engine, expire_on_commit=False)
     inventory_instance = inventory(items=request.items, user_id=current_user.user_id)

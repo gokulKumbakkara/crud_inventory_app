@@ -1,5 +1,6 @@
 import json
 import pytest
+from fastapi import Depends
 from main import app
 
 
@@ -21,12 +22,18 @@ def test_read_user(normal_user_token_headers):
     assert response.status_code == 200
 
 def test_update_user(normal_user_token_headers):
-    data = {
-        "id": "1",
-        "name": "google",
+    # data = {
+    #     "id": "1",
+    #     "name": "google",
+    # }
+    #/user/2?name=google" 
+
+    params = {
+        "id":"1",
+        "name":"google"
     }
     session = normal_user_token_headers
-    response = session.put("/user/2?name=google", data=data)
+    response = session.put("/user/", params=params)
     assert response.status_code == 200
     assert response.json()["name"] == "google"
     assert response.json()["email"] == "gokull@g.com"

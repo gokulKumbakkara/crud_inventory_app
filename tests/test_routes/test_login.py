@@ -1,7 +1,6 @@
 import json
 import pytest
-from main import app
-
+from fastapi import Depends
 
 def test_login(naive_session):
     data = {

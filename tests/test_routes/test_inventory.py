@@ -1,4 +1,5 @@
 import json
+from fastapi import Depends
 import pytest
 from main import app
 
@@ -17,12 +18,9 @@ def test_read_inventory(normal_user_token_headers):
 
 
 def test_update_inventory(normal_user_token_headers):
-    data = {
-        "id": "1",
-        "items": "doogle",
-    }
+    
     session = normal_user_token_headers
-    response = session.put("inventory/3?items=apple", json.dumps(data))
+    response = session.put("inventory/1",params={"items":"apple"})
     assert response.status_code == 200
 
 

@@ -1,9 +1,10 @@
 
 from fastapi.testclient import TestClient
+from fastapi import Depends
+from models.database import get_db,dbTest
 from schema import schemas
 from sqlalchemy.orm import Session
-import sys
-import os
+import sys,os,string,random
 from repository.repo import get_user_by_email,create_the_users
 from models.database import engine
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
@@ -23,13 +24,16 @@ def user_authentication_headers(client: TestClient, email: str, password: str):
     return client
 
 
-def authentication_token_from_email(client: TestClient, email: str):
+def authentication_token_from_email(client: TestClient, email: str,dbTest: Session):
     
     password = "string"
     name = "gokul"
-    user = get_user_by_email(email=email)
+    user = get_user_by_email(email=email,dbTest=dbTest)
     if not user:
-        session = Session(bind=engine, expire_on_commit=False)
+        
         user_in_create = schemas.UserRequest(name=name, email=email, password=password)
-        user = create_the_users(user=user_in_create)
+        user = create_the_users(user=user_in_create,dbTest=dbTest)
     return user_authentication_headers(client=client, email=email, password=password)
+
+def random_char(y):
+       return ''.join(random.choice(string.ascii_letters) for x in range(y))

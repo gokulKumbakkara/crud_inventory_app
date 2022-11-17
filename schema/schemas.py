@@ -22,16 +22,22 @@ class UserRequest(BaseModel):
     password: str
 
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 class CurrentUser(BaseModel):
-    id: int
+    user_id: int
     email: str
 
 
 class ShowUser(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class DisplayUser(BaseModel):
     name: str
     email: str
 

@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from models.database import get_db
 
 from models.database import Base, engine, inventory, user_table
 from schema import schemas
@@ -14,13 +15,13 @@ from repository.repo import verify
 
 
 
+
 router = APIRouter()
 
 @router.post("/login",tags=["login"])
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    session = Session(bind=engine, expire_on_commit=False)
+def login(form_data: OAuth2PasswordRequestForm = Depends(),db: Session = Depends(get_db)):
     user = (
-        session.query(user_table).filter(user_table.email == form_data.username).first()
+        db.query(user_table).filter(user_table.email == form_data.username).first()
     )
     if not user:
         raise HTTPException(

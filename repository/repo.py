@@ -7,16 +7,17 @@ from models.database import engine, user_table
 from passlib.context import CryptContext
 from schema.schemas import ShowUser
 from sqlalchemy.orm import Session
-from models.database import get_db
+from models.database import get_db,user_table
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_the_users(user: ShowUser,dbTest: Session):
-    user = ShowUser(
+    user =  user_table(
         name=user.name,
         email=user.email,
-        hashed_password = pwd_context.hash(user.password)
+        password = pwd_context.hash(user.password),
+        is_superuser = user.is_superuser
     )
     dbTest.add(user)
     dbTest.commit()

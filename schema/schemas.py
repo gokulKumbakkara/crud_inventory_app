@@ -40,6 +40,7 @@ class ShowUser(BaseModel):
     name: str
     email: str
     password: str
+    is_superuser: bool
 
 class DisplayUser(BaseModel):
     name: str

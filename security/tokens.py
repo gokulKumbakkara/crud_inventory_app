@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from dotenv import load_dotenv
-from jose import JWTError, jwt
+import jwt
 from schema import schemas
 
 load_dotenv()
@@ -26,7 +26,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
 
 def verify_token(token: str, credentials_exception):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
         email: str = payload.get("sub")
         user_id: str = payload.get("user_id")
         is_superuser: str = payload.get("is_superuser")
@@ -34,5 +34,5 @@ def verify_token(token: str, credentials_exception):
             raise credentials_exception
         token_data = schemas.TokenData(email=email, user_id=user_id,is_superuser=is_superuser)
         return token_data
-    except JWTError:
+    except jwt.exceptions.PyJWTError:
         raise credentials_exception

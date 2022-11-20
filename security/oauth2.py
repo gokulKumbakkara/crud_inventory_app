@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
 from repository.repo import get_user_by_email
 from schema.schemas import CurrentUser, UserRequest
 

@@ -21,6 +21,8 @@ python-multipart = "*"
 python-dotenv = "*"
 pytest = "*"
 monkeytype = "*"
+pyjwt = "*"
+httpx = "*"
 
 [dev-packages]
 pytest = "*"

@@ -1,7 +1,7 @@
 
 from fastapi.testclient import TestClient
 from fastapi import Depends
-from models.database import get_db,dbTest
+from models.database import get_db
 from schema import schemas
 from sqlalchemy.orm import Session
 import sys,os,string,random
@@ -19,8 +19,10 @@ def user_authentication_headers(client: TestClient, email: str, password: str):
     print(f"[***response***]", response)
     assert r.status_code == 200
     auth_token = response["access_token"]
+    print(auth_token)
     headers = {"Authorization": f"{response['token_type']} {response['access_token']}"}
     client.headers.update(headers)
+    print(client.headers)
     return client
 
 
@@ -28,10 +30,11 @@ def authentication_token_from_email(client: TestClient, email: str,dbTest: Sessi
     
     password = "string"
     name = "gokul"
+    is_superuser = True
     user = get_user_by_email(email=email,dbTest=dbTest)
     if not user:
         
-        user_in_create = schemas.UserRequest(name=name, email=email, password=password)
+        user_in_create = schemas.UserRequest(name=name, email=email, password=password,is_superuser=is_superuser)
         user = create_the_users(user=user_in_create,dbTest=dbTest)
     return user_authentication_headers(client=client, email=email, password=password)
 

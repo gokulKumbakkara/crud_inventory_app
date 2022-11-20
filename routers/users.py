@@ -18,8 +18,7 @@ router = APIRouter()
 
 
 @router.get("/user",tags=["user"])
-def read_user(db: Session = Depends(get_db),current_user: schemas.UserRequest = Depends(oauth2.get_current_user)):
-
+def read_user(db: Session = Depends(get_db)):
     user_data = db.query(user_table).all()
 
 
@@ -49,25 +48,21 @@ def create_user(
     return user_instance
 
 
-@router.get("/user/{id}", response_model=schemas.ShowUser,tags=["user"])
+@router.get("/user/{id}",tags=["user"])
 def read_user_id(
     id: int,db: Session = Depends(get_db),current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
 
-    invent = db.query(user_table).get(id)
+    invent =db.query(user_table).filter(user_table.id == id).first()
 
     db.close()
-    print("#######")
-    print(invent.id)
-  
-    print("######")
-
+    
     return invent
 
 
 @router.put("/user/{id}",tags=["user"])
-def update_inventory(
+def update_user(
     id: int,
     name: str,
     db: Session = Depends(get_db),
@@ -83,7 +78,6 @@ def update_inventory(
 
     if not user_data:
         raise HTTPException(status_code=404, detail=f"item with id {id} not found")
-    print(user_data)
     return user_data
 
 

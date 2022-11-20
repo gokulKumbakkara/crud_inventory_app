@@ -6,7 +6,7 @@ from main import app
 
 def test_create_inventory(normal_user_token_headers):
     data = {"items": "gadgets"}
-    response = normal_user_token_headers.post("/inventory", json.dumps(data))
+    response = normal_user_token_headers.post("/inventory", json=data)
     assert response.status_code == 201
     assert response.json()["items"] == "gadgets"
 
@@ -27,9 +27,9 @@ def test_update_inventory(normal_user_token_headers):
 
 def test_read_single_inventory(normal_user_token_headers):
     session = normal_user_token_headers
-    response = session.get("/inventory/4")
+    response = session.get("/inventory/1")
     assert response.status_code == 200
-    assert response.json()["user_id"] == 2
+    assert response.json()["user_id"] == 4
 
 
 

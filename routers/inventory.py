@@ -44,6 +44,7 @@ def read_inventory_item(
 
     return invent
 
+
 @router.post("/inventory", status_code=status.HTTP_201_CREATED,tags=["inventory"])
 def create_inventory(
     request: schemas.InventoryRequest,

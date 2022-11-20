@@ -7,7 +7,7 @@ from models.database import engine, user_table
 from passlib.context import CryptContext
 from schema.schemas import ShowUser
 from sqlalchemy.orm import Session
-from models.database import get_db,dbTest
+from models.database import get_db
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

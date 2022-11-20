@@ -26,4 +26,4 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     )
 
     token_data = tokens.verify_token(token, credentials_exception)
-    return CurrentUser(user_id=token_data.user_id, email=token_data.email)
+    return CurrentUser(user_id=token_data.user_id, email=token_data.email,is_superuser=token_data.is_superuser)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import Column, ForeignKey, Integer, String,Boolean,create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship,sessionmaker
 from fastapi import Request
@@ -29,6 +29,7 @@ class user_table(Base):
     name = Column(String(100))
     email = Column(String(100))
     password = Column(String(100))
+    is_superuser = Column(Boolean())
 
     user_relation = relationship("inventory", back_populates="inventory_relation")
 

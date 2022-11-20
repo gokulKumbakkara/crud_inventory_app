@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.get("/user",tags=["user"])
-def read_user(db: Session = Depends(get_db)):
+def read_user(db: Session = Depends(get_db),current_user: schemas.UserRequest = Depends(oauth2.get_current_user)):
 
     user_data = db.query(user_table).all()
 
@@ -31,15 +31,20 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/user", response_model=schemas.DisplayUser,tags=["user"])
 def create_user(
-    request: schemas.UserRequest,db: Session = Depends(get_db)
+    request: schemas.UserRequest,db: Session = Depends(get_db),current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
 ):
 
     hashed_password = pwd_context.hash(request.password)
-    user_instance = user_table(
-        name=request.name, email=request.email, password=hashed_password
-    )
-    db.add(user_instance)
-    db.commit()
+    if current_user.is_superuser == True:
+        user_instance = user_table(
+            name=request.name, email=request.email, password=hashed_password,is_superuser=request.is_superuser
+        )
+        db.add(user_instance)
+        db.commit()
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=f"no privilege"
+        )
 
     return user_instance
 

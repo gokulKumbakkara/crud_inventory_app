@@ -1,14 +1,14 @@
-from fastapi.testclient import TestClient
-from fastapi import Depends
 import httpx
-from sqlalchemy.orm import Session
 import pytest
-from tests.utils.functionalities import authentication_token_from_email,random_char
+from fastapi import Depends
+from fastapi.testclient import TestClient
 from main import app
+from models.database import Base, SessionLocal
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import sessionmaker
-from models.database import Base,SessionLocal
+from sqlalchemy.orm import Session, sessionmaker
+
+from tests.utils.functionalities import (authentication_token_from_email,
+                                         random_char)
 
 dbTest=SessionLocal()
 

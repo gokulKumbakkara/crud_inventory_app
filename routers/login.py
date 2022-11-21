@@ -1,20 +1,14 @@
-from fastapi import APIRouter
 from typing import Optional, Union
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from models.database import Base, engine, get_db, inventory, user_table
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
-from models.database import get_db
-
-from models.database import Base, engine, inventory, user_table
+from repository.repo import verify
 from schema import schemas
 from security import oauth2, tokens
-from repository.repo import verify
-
-
-
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 

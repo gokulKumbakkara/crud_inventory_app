@@ -7,12 +7,13 @@ from models.database import engine, user_table
 from passlib.context import CryptContext
 from schema.schemas import ShowUser
 from sqlalchemy.orm import Session
+from typing import Optional
 from models.database import get_db,user_table
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def create_the_users(user: ShowUser,dbTest: Session):
+def create_the_users(user: ShowUser,dbTest: Session) -> user_table:
     user =  user_table(
         name=user.name,
         email=user.email,
@@ -25,11 +26,11 @@ def create_the_users(user: ShowUser,dbTest: Session):
     return user
 
 
-def get_user_by_email(email: str,dbTest: Session):
+def get_user_by_email(email: str,dbTest: Session) -> Optional[user_table]:
 
     user = dbTest.query(user_table).filter(user_table.email == email).first()
     return user
 
-def verify(plain_password, hashed_password):
+def verify(plain_password, hashed_password) -> bool:
 
     return pwd_context.verify(plain_password, hashed_password)

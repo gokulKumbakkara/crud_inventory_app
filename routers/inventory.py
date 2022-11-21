@@ -1,24 +1,20 @@
-from fastapi import APIRouter
 from typing import Optional, Union
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from models.database import Base, engine, inventory, user_table
 from passlib.context import CryptContext
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
-
-from models.database import Base, engine, inventory, user_table
 from schema import schemas
 from security import oauth2, tokens
-
-
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 @router.get("/inventory",tags=["inventory"])
 def read_inventory(
     current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
-):
+) ->inventory: 
 
     session = Session(bind=engine, expire_on_commit=False)
 
@@ -31,7 +27,7 @@ def read_inventory(
 @router.get("/inventory/{id}",tags=["inventory"])
 def read_inventory_item(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
-):
+) ->inventory:
 
     session = Session(bind=engine, expire_on_commit=False)
 
@@ -49,7 +45,7 @@ def read_inventory_item(
 def create_inventory(
     request: schemas.InventoryRequest,
     current_user: schemas.CurrentUser = Depends(oauth2.get_current_user),
-):
+)->inventory:
     session = Session(bind=engine, expire_on_commit=False)
     inventory_instance = inventory(items=request.items, user_id=current_user.user_id)
     session.add(inventory_instance)
@@ -65,7 +61,7 @@ def update_inventory(
     id: int,
     items: str,
     current_user: schemas.UserRequest = Depends(oauth2.get_current_user),
-):
+)-> inventory:
 
     session = Session(bind=engine, expire_on_commit=False)
 
@@ -89,7 +85,7 @@ def update_inventory(
 @router.delete("/inventory/{id}",tags=["inventory"])
 def delete_inventory_item(
     id: int, current_user: schemas.UserRequest = Depends(oauth2.get_current_user)
-):
+) -> Union[str,None]:
 
     session = Session(bind=engine, expire_on_commit=False)
     invent = session.query(inventory).get(id)

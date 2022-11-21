@@ -10,41 +10,41 @@ class TokenData(BaseModel):
 
 
 class InventoryRequest(BaseModel):
-    items: str
+    items: Union[str, None] = None
 
 
 class ShowInventory(BaseModel):
-    id: int
+    id: Union[int, None] = None
 
 
 class UserRequest(BaseModel):
-    name: str
-    email: str
-    password: str
+    name: Union[str, None] = None
+    email: Union[str, None] = None
+    password: Union[str, None] = None
     is_superuser: bool
 
 
 
 
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    access_token: Union[str, None] = None
+    token_type: Union[str, None] = None
 
 class CurrentUser(BaseModel):
-    user_id: int
-    email: str
+    user_id: Union[int, None] = None
+    email: Union[str, None] = None
     is_superuser: bool
 
 
 class ShowUser(BaseModel):
-    name: str
-    email: str
-    password: str
+    name: Union[str, None] = None
+    email: Union[str, None] = None
+    password: Union[str, None] = None
     is_superuser: bool
 
 class DisplayUser(BaseModel):
-    name: str
-    email: str
+    name: Union[str, None] = None
+    email: Union[str, None] = None
     is_superuser: bool
 
     class Config:
